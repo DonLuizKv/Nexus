@@ -1,1 +1,48 @@
 @import 'tailwindcss';
+
+@theme {
+	/* ── Palette ─────────────────────────────────────────────── */
+	--color-background: #0a0c10;
+	--color-foreground: #eef1f6;
+	--color-border: #232a35;
+	--color-input: #12161d;
+	--color-card: #11161d;
+	--color-surface: #0f1319;
+	--color-elevated: #161c26;
+	--color-muted: #161b23;
+	--color-muted-foreground: #8e96a5;
+
+	--color-primary: #5b9cff;
+	--color-primary-foreground: #ffffff;
+	--color-secondary: #1a2230;
+	--color-secondary-foreground: #9cc4ff;
+	--color-accent: #7fb4ff;
+	--color-accent-dim: #16283f;
+
+	--color-success: #3dd598;
+	--color-warning: #fbbf24;
+
+	/* ── Typography ──────────────────────────────────────────── */
+	--font-body: 'Inter', sans-serif;
+	--font-headings: 'Space Grotesk', sans-serif;
+	--font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+	/* ── Radii ───────────────────────────────────────────────── */
+	--radius-sm: 6px;
+	--radius-md: 8px;
+	--radius-lg: 12px;
+	--radius-xl: 16px;
+}
+
+@layer base {
+	:root {
+		color-scheme: dark;
+	}
+
+	body {
+		background-color: var(--color-background);
+		color: var(--color-foreground);
+		font-family: var(--font-body);
+		min-height: 100vh;
+	}
+}

@@ -1,6 +1,6 @@
 import { BACKEND_URL, NODE_ENV, BACKEND_URL_DEV } from '$app/env/private';
 
-const API_URL = NODE_ENV === "development" ? BACKEND_URL_DEV : BACKEND_URL;
+const API_URL = NODE_ENV === 'development' ? BACKEND_URL_DEV : BACKEND_URL;
 
 export class RequestError extends Error {
 	status: number;
@@ -49,9 +49,11 @@ function buildQueryString(query?: QueryParams): string {
 	return qs ? `?${qs}` : '';
 }
 
-function buildFetchOptions<TBody>(
-	props: RequestProps<TBody>['props']
-): { method: string; headers: Record<string, string>; body: string | undefined } {
+function buildFetchOptions<TBody>(props: RequestProps<TBody>['props']): {
+	method: string;
+	headers: Record<string, string>;
+	body: string | undefined;
+} {
 	const { method = 'GET', headers = {}, body } = props ?? {};
 	return {
 		method,
@@ -82,7 +84,8 @@ async function request<TResponse, TBody = undefined>({
 
 		if (!res.ok) {
 			throw new RequestError(
-				(data as Record<string, unknown>)?.message as string || `Error del servidor (${res.status})`,
+				((data as Record<string, unknown>)?.message as string) ||
+					`Error del servidor (${res.status})`,
 				res.status,
 				data
 			);

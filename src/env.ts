@@ -1,7 +1,7 @@
 import { defineEnvVars } from '@sveltejs/kit/env';
 
 export const variables = defineEnvVars({
-    BACKEND_URL: {},
-    NODE_ENV: {},
-    BACKEND_URL_DEV: {}
+	BACKEND_URL: {},
+	NODE_ENV: {},
+	BACKEND_URL_DEV: {}
 });
