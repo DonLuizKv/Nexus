@@ -1,6 +1,6 @@
-import { BACKEND_URL, NODE_ENV, BACKEND_URL_DEV } from '$app/env/private';
+import { BACKEND_URL } from '$app/env/private';
 
-const API_URL = NODE_ENV === 'development' ? BACKEND_URL_DEV : BACKEND_URL;
+const API_URL = BACKEND_URL;
 
 export class RequestError extends Error {
 	status: number;

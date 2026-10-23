@@ -1,48 +1,263 @@
 @import 'tailwindcss';
 
+/*
+ * Nexus — "almanaque" theme.
+ * Old-web ingredients (tiled sky, hyperlink blue, Georgia/Verdana/Courier) arranged with
+ * editorial spacing. Color always carries meaning:
+ *   - hyperlink blue  → actions and links
+ *   - marker yellow   → data (template variables, search hits)
+ *   - kind colors     → the type of artifact (prompt, skill, agent…), nothing else
+ *   - red             → destructive / irreversible
+ */
 @theme {
-	/* ── Palette ─────────────────────────────────────────────── */
-	--color-background: #0a0c10;
-	--color-foreground: #eef1f6;
-	--color-border: #232a35;
-	--color-input: #12161d;
-	--color-card: #11161d;
-	--color-surface: #0f1319;
-	--color-elevated: #161c26;
-	--color-muted: #161b23;
-	--color-muted-foreground: #8e96a5;
+	--color-paper: #fbf8f1;
+	--color-paper-deep: #f2ecdf;
+	--color-sheet: #fffdf8;
+	--color-ink: #1a1813;
+	--color-ink-soft: #4a463c;
+	--color-ink-faint: #6b6558;
+	--color-rule: #dcd2bf;
 
-	--color-primary: #5b9cff;
-	--color-primary-foreground: #ffffff;
-	--color-secondary: #1a2230;
-	--color-secondary-foreground: #9cc4ff;
-	--color-accent: #7fb4ff;
-	--color-accent-dim: #16283f;
+	--color-link: #0000ee;
+	--color-link-deep: #0000b0;
+	--color-link-visited: #551a8b;
+	--color-link-active: #e00000;
 
-	--color-success: #3dd598;
-	--color-warning: #fbbf24;
+	--color-marker: #fff27a;
+	--color-sky: #2f6fc2;
+	--color-sky-deep: #0f3a7d;
 
-	/* ── Typography ──────────────────────────────────────────── */
-	--font-body: 'Inter', sans-serif;
-	--font-headings: 'Space Grotesk', sans-serif;
-	--font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+	--color-ok: #1d6b35;
+	--color-danger: #b3261e;
+	--color-danger-soft: #fbe6e3;
+	--color-danger-ink: #7f1d1d;
 
-	/* ── Radii ───────────────────────────────────────────────── */
-	--radius-sm: 6px;
-	--radius-md: 8px;
-	--radius-lg: 12px;
-	--radius-xl: 16px;
+	/* Artifact kinds. Each passes 4.5:1 with white text and with its soft tint as text bg. */
+	--color-k-prompt: #2f6fc2;
+	--color-k-skill: #1d7a46;
+	--color-k-agent: #c2410c;
+	--color-k-settings: #0f766e;
+	--color-k-context: #a15c07;
+
+	/* The 1996 "core fonts for the web": no downloads, period-true, built for screens. */
+	--font-serif: Georgia, 'Times New Roman', Times, serif;
+	--font-sans: Verdana, Tahoma, Geneva, sans-serif;
+	--font-mono: 'Courier New', Courier, monospace;
+
+	--animate-drift: drift 120s linear infinite;
+	--animate-marquee: marquee 60s linear infinite;
+	--animate-rise: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+	--animate-caret: caret 1s steps(1) infinite;
+
+	@keyframes drift {
+		to {
+			background-position: -400px 0;
+		}
+	}
+	@keyframes marquee {
+		to {
+			transform: translateX(-50%);
+		}
+	}
+	@keyframes rise {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+	}
+	@keyframes caret {
+		50% {
+			opacity: 0;
+		}
+	}
 }
 
 @layer base {
-	:root {
-		color-scheme: dark;
+	html {
+		background: var(--color-paper);
+		color: var(--color-ink);
+		font-family: var(--font-serif);
+		-webkit-text-size-adjust: 100%;
 	}
-
 	body {
-		background-color: var(--color-background);
-		color: var(--color-foreground);
-		font-family: var(--font-body);
-		min-height: 100vh;
+		min-height: 100svh;
+		font-size: 17px;
+		line-height: 1.6;
+	}
+	a {
+		color: var(--color-link);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 2px;
+	}
+	a:visited {
+		color: var(--color-link-visited);
+	}
+	a:hover {
+		text-decoration-thickness: 2px;
+	}
+	a:active {
+		color: var(--color-link-active);
+	}
+	button,
+	summary,
+	select,
+	label:has(input[type='checkbox'], input[type='radio']) {
+		cursor: pointer;
+	}
+	::selection {
+		background: var(--color-marker);
+		color: var(--color-ink);
+	}
+	/* The dotted focus ring is an old-web relic that also happens to be very visible. */
+	:focus-visible {
+		outline: 2px dotted currentColor;
+		outline-offset: 3px;
+	}
+	kbd {
+		border: 1px solid var(--color-ink-faint);
+		border-bottom-width: 2px;
+		padding: 0 0.35em;
+		font-family: var(--font-mono);
+		font-size: 0.9em;
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		html {
+			scroll-behavior: smooth;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		::before,
+		::after {
+			animation-duration: 0.001ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.001ms !important;
+		}
+	}
+}
+
+/* Tiled 90s cloud wallpaper. */
+@utility sky {
+	background-color: var(--color-sky);
+	background-image: url('/images/limitless_cloud_blue.jpg');
+	background-repeat: repeat;
+	background-size: 400px auto;
+}
+
+/* Ruled manuscript sheet: one rule every 1.75em, plus a faint red margin line. */
+@utility ruled {
+	background-color: var(--color-sheet);
+	background-image:
+		linear-gradient(
+			to right,
+			transparent 2.5rem,
+			rgb(200 60 60 / 0.35) 2.5rem,
+			rgb(200 60 60 / 0.35) calc(2.5rem + 1px),
+			transparent calc(2.5rem + 1px)
+		),
+		linear-gradient(
+			to bottom,
+			transparent calc(1.75em - 1px),
+			color-mix(in srgb, var(--color-sky) 16%, transparent) calc(1.75em - 1px)
+		);
+	background-size:
+		100% 100%,
+		100% 1.75em;
+	background-attachment: local;
+}
+
+@utility eyebrow {
+	font-family: var(--font-sans);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+@utility btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.45em;
+	min-height: 2.6rem;
+	padding: 0.45rem 1rem;
+	border: 1px solid var(--color-ink);
+	background: var(--color-sheet);
+	box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.12);
+	color: var(--color-ink);
+	font-family: var(--font-sans);
+	font-size: 13px;
+	font-weight: 700;
+	line-height: 1.2;
+	text-decoration: none;
+	white-space: nowrap;
+	transition:
+		background-color 120ms ease,
+		transform 80ms ease,
+		box-shadow 80ms ease;
+	&:visited {
+		color: var(--color-ink);
+	}
+	&:hover {
+		background: var(--color-paper-deep);
+	}
+	&:active {
+		transform: translateY(1px);
+		box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.12);
+	}
+	&:disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+		transform: none;
+	}
+	&[aria-pressed='true'] {
+		background: var(--color-marker);
+	}
+}
+
+@utility btn-primary {
+	border-color: var(--color-link-deep);
+	background: var(--color-link);
+	box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.25);
+	color: #fff;
+	&:visited {
+		color: #fff;
+	}
+	&:hover {
+		background: var(--color-link-deep);
+	}
+}
+
+@utility btn-danger {
+	border-color: var(--color-danger);
+	background: var(--color-danger);
+	box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.25);
+	color: #fff;
+	&:hover {
+		background: #8f1d17;
+	}
+}
+
+@utility field {
+	display: block;
+	width: 100%;
+	border: 1px solid var(--color-ink-faint);
+	background: var(--color-sheet);
+	box-shadow: inset 1px 2px 0 rgb(0 0 0 / 0.05);
+	padding: 0.55rem 0.75rem;
+	color: var(--color-ink);
+	font-size: 16px;
+	line-height: 1.5;
+	&::placeholder {
+		color: var(--color-ink-faint);
+	}
+	&:focus {
+		border-color: var(--color-link);
+		outline: 2px solid var(--color-link);
+		outline-offset: 0;
+	}
+	&[aria-invalid='true'] {
+		border-color: var(--color-danger);
 	}
 }
